@@ -1,0 +1,199 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.jj</groupId>
+    <artifactId>oo</artifactId>
+    <packaging>war</packaging>
+    <version>1.0</version>
+    <name>oo Maven Webapp</name>
+    <url>http://maven.apache.org</url>
+    <!-- 各种版本信息-->
+    <properties>
+        <java-version>1.8</java-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mysql.version>5.1.43</mysql.version>
+        <junit.version>4.12</junit.version>
+    </properties>
+    <dependencies>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- mysql JDBC  -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+        <!-- servlet 3.1 -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- jsp-api -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JSTL -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <!-- 项目名称 -->
+        <finalName>${project.artifactId}</finalName>
+        <!-- 默认的主代码目录 -->
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <!-- 默认的测试代码目录 -->
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <!-- 处理无法加载资源配置文件 -->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- web项目打war文件配置 先complie 再打war-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <warName>${project.artifactId}</warName>
+                    <!--<warSourceExcludes>**/*.js,**/*.css</warSourceExcludes>-->
+                    <webResources>
+                        <resource>
+                            <directory>src/main/resources</directory>
+                            <targetPath>WEB-INF/classes</targetPath>
+                            <includes>
+                                <include>**/*.properties</include>
+                                <include>**/*.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <!-- YUI Compressor Maven压缩插件 -->
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>compress</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 读取js,css文件采用UTF-8编码 -->
+                    <encoding>UTF-8</encoding>
+                    <!-- 不显示js可能的错误 -->
+                    <jswarn>false</jswarn>
+                    <!-- 若存在已压缩的文件，会先对比源文件是否有改动  有改动便压缩，无改动就不压缩 -->
+                    <force>true</force>
+                    <!-- 在指定的列号后插入新行 -->
+                    <linebreakpos>-1</linebreakpos>
+                    <!-- 压缩之前先执行聚合文件操作 -->
+                    <preProcessAggregates>true</preProcessAggregates>
+                    <!-- 压缩后保存文件后缀 有后缀 a.js  a.min.js -->
+                    <nosuffix>false</nosuffix>
+                    <!--<suffix>.min</suffix>-->
+                    <!-- 源目录，即需压缩的根目录 -->
+                    <sourceDirectory>src/main/webapp</sourceDirectory>
+                    <!-- 压缩js和css文件 -->
+                    <includes>
+                        <include>**/*.js</include>
+                        <include>**/*.css</include>
+                    </includes>
+                    <!-- 以下目录和文件不会被压缩 -->
+                    <excludes>
+                        <exclude>**/*.min.js</exclude>
+                        <exclude>**/*.min.css</exclude>
+                    </excludes>
+
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <!-- tomcat plugin -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>http://localhost:80/manager/text</url> <!-- tomcat管理路径 -->
+                    <server>tomcat7</server> <!-- 与settings.xml文件中Server的id相同 -->
+                    <uriEncoding>utf-8</uriEncoding>
+                    <port>80</port><!--服务器端口号80可以省去-->
+                    <path>/</path> <!-- 应用的部署位置 -->
+                    <contextReloadable>true</contextReloadable>
+                    <systemProperties>
+                        <java.util.logging.SimpleFormatter.format>[%4$s] %1$tF %1$tT %3$s %5$s %n</java.util.logging.SimpleFormatter.format>
+                    </systemProperties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>tomcat-run</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
