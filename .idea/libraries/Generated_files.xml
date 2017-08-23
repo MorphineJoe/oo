@@ -3,6 +3,8 @@
     <properties>
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/src/main/webapp/js/common.min.js" />
+        <item url="file://$PROJECT_DIR$/src/main/webapp/js/common.min.min.js" />
+        <item url="file://$PROJECT_DIR$/src/main/webapp/js/common.min.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
@@ -10,6 +12,8 @@
       <root url="file://$PROJECT_DIR$/src/main/webapp/jss/comon.min.js" />
       <root url="file://$PROJECT_DIR$/src/main/webapp/js/simple.min.js" />
       <root url="file://$PROJECT_DIR$/src/main/webapp/js/simple.min.js" />
+      <root url="file://$PROJECT_DIR$/src/main/webapp/js/common.min.js" />
+      <root url="file://$PROJECT_DIR$/src/main/webapp/js/common.min.min.js" />
       <root url="file://$PROJECT_DIR$/src/main/webapp/js/common.min.js" />
     </CLASSES>
     <JAVADOC />
